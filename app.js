@@ -8,6 +8,15 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const Student = require('./models/student');
 const Buyproduct = require('./models/buyproduct');
+const User = require('./models/user');
+
+//routes
+
+const passport = require('passport');
+const { userInfo } = require('os');
+
+//passport config
+//require('./config/passport')(passport);
 
 //making a publicc folder for our app to allow a client to access the files
 app.use(express.static(__dirname + '/public'));
@@ -65,11 +74,20 @@ app.get('/', (req, res) => {
 
 });
 
+//go login page
+app.get('/login', (req, res) => {
+  res.render('login');
+  });
+  //go login page
+app.get('/signup', (req, res) => {
+  res.render('user_create');
+  });
+
 
 
 //go login page
 app.get('/login', (req, res) => {
-  res.render('login');
+  res.render('login2');
   });
 
 //go contact page
@@ -201,6 +219,29 @@ app.get('/students', (req, res) => {
 
 });
 
+//get all  user route or check product its for admin
+app.get('/userdet', (req, res) => {
+  User.find()
+  .then((results)=>{
+    res.render('userdetail',{users:results});
+  // res.send(results)
+  })
+  .catch(err=>{console.log(err)});
+
+});
+
+//sign up user
+app.get('/usercer', (req, res) => {
+  res.render('user_create');
+  });
+app.post('/usercer',(req, res) => {
+ const user = new User({name:req.body.name,email:req.body.email,password:req.body.password,role:req.body.role })
+ user.save()
+ .then(results =>{res.redirect('/usercer');})
+ .catch(err => {console.log(err)});
+});
+
+
 
 
 
@@ -253,6 +294,16 @@ app.get('/students/delete/:id', (req, res) => {
   Student.deleteOne({_id:req.params.id})
   .then(result=>{
     res.redirect('/students');
+  })
+  .catch(err=>{console.log(err)});
+  });
+
+//delete  user route
+app.get('/user/:id', (req, res) => {
+
+  User.deleteOne({_id:req.params.id})
+  .then(result=>{
+    res.redirect('/userdet');
   })
   .catch(err=>{console.log(err)});
   });

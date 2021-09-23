@@ -12,6 +12,7 @@ const User = require('./models/User');
 const passport = require('passport');
 const session = require('express-session');
 
+
 //routes
 const users = require('./routes/users');
 //passport config
@@ -61,6 +62,24 @@ function checkFileType(file, cb) {
   }
 }
 
+ //express session middleware
+ app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true
+}));
+//express messages middleware
+app.use(require('connect-flash')());
+app.use(function (req, res, next) {
+  res.locals.messages = require('express-messages')(req, res);
+  next();
+});
+
+ 
+    //passport middleware
+  
+  app.use(passport.initialize());
+  app.use(passport.session());
 
 //get all product route index
 app.get('/', (req, res) => {
@@ -81,10 +100,10 @@ app.get('/', (req, res) => {
 
 app.post('/login', (req, res, next) => {
     
-    passport.authenticate('local', { 
-        successRedirect: '/',
-        failureRedirect: '/login',
-        failureFlash: true })(req, res,next)
+  passport.authenticate('local', { 
+      successRedirect: '/',
+      failureRedirect: '/login',
+      failureFlash: true })(req, res,next)
 });
 
 app.get('/logout', (req, res) => {
@@ -97,11 +116,6 @@ app.get('/logout', (req, res) => {
 app.get('/signup', (req, res) => {
   res.render('user_create');
   });
-
-
-
-
-
 //go contact page
 app.get('/cntact', (req, res) => {
   res.render('cantact');
@@ -247,8 +261,8 @@ app.get('/usercer', (req, res) => {
   res.render('user_create');
   });
 app.post('/usercer',(req, res) => {
- const User = new User({name:req.body.name,email:req.body.email,password:req.body.password,role:req.body.role })
- User.save()
+ const user = new User({name:req.body.name,email:req.body.email,password:req.body.password,role:req.body.role })
+ user.save()
  .then(results =>{res.redirect('/usercer');})
  .catch(err => {console.log(err)});
 });
@@ -340,16 +354,7 @@ app.get('/user/:id', (req, res) => {
   }).catch(err=>{console.log(err)});
   });
 
-  //express session middleware
-app.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true
-}));
-  //passport middleware
 
-app.use(passport.initialize());
-app.use(passport.session());
   
 
 

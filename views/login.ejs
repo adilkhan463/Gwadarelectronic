@@ -1,33 +1,4 @@
-Skip to content
-Why GitHub? 
-Team
-Enterprise
-Explore 
-Marketplace
-Pricing 
-Search
-Sign in
-Sign up
-fareed-baloch
-/
-class-app
-Public
-00
-Code
-Issues
-Pull requests
-Actions
-Projects
-Wiki
-Security
-Insights
-class-app/views/login.ejs
-@fareed-baloch
-fareed-baloch complete login
-Latest commit a5e0951 19 days ago
- History
- 1 contributor
-89 lines (66 sloc)  3.45 KB
+
   
 <!DOCTYPE html>
 <html lang="en">
@@ -72,8 +43,9 @@ Latest commit a5e0951 19 days ago
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                     </div>
+                                  //  <%- messages('errors', locals) %>
                                   
-                                    <form class="user" action="/users/login" method="POST">
+                                    <form class="user" action="/login" method="POST">
                                         <div class="form-group">
                                             <input type="email" name="email" class="form-control form-control-user"
                                                 id="exampleInputEmail" aria-describedby="emailHelp"

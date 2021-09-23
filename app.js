@@ -8,15 +8,14 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const Student = require('./models/student');
 const Buyproduct = require('./models/buyproduct');
-const User = require('./models/user');
+const User = require('./models/User');
+const passport = require('passport');
+const session = require('express-session');
 
 //routes
-
-const passport = require('passport');
-const { userInfo } = require('os');
-
+const users = require('./routes/users');
 //passport config
-//require('./config/passport')(passport);
+require('./config/passport')(passport);
 
 //making a publicc folder for our app to allow a client to access the files
 app.use(express.static(__dirname + '/public'));
@@ -75,20 +74,33 @@ app.get('/', (req, res) => {
 });
 
 //go login page
-app.get('/login', (req, res) => {
-  res.render('login');
-  });
-  //go login page
+
+  app.get('/login', (req, res) => {
+    res.render('login');
+});
+
+app.post('/login', (req, res, next) => {
+    
+    passport.authenticate('local', { 
+        successRedirect: '/',
+        failureRedirect: '/login',
+        failureFlash: true })(req, res,next)
+});
+
+app.get('/logout', (req, res) => {
+  req.logout();
+  req.flash('success','you are logged out');
+  res.redirect('/login');
+});
+
+  //go signup page
 app.get('/signup', (req, res) => {
   res.render('user_create');
   });
 
 
 
-//go login page
-app.get('/login', (req, res) => {
-  res.render('login2');
-  });
+
 
 //go contact page
 app.get('/cntact', (req, res) => {
@@ -235,8 +247,8 @@ app.get('/usercer', (req, res) => {
   res.render('user_create');
   });
 app.post('/usercer',(req, res) => {
- const user = new User({name:req.body.name,email:req.body.email,password:req.body.password,role:req.body.role })
- user.save()
+ const User = new User({name:req.body.name,email:req.body.email,password:req.body.password,role:req.body.role })
+ User.save()
  .then(results =>{res.redirect('/usercer');})
  .catch(err => {console.log(err)});
 });
@@ -327,6 +339,17 @@ app.get('/user/:id', (req, res) => {
     res.redirect('/students');
   }).catch(err=>{console.log(err)});
   });
+
+  //express session middleware
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true
+}));
+  //passport middleware
+
+app.use(passport.initialize());
+app.use(passport.session());
   
 
 

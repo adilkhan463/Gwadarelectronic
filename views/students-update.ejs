@@ -1,0 +1,33 @@
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                 
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-4 text-gray-800">Update Student page</h1>
+                    <form action="/students/update" method="post">
+                        <label class="form-item" for="name">category:</label>
+                        <input class="form-control" type="text" value="<%= student.category %>"  name="name">
+                        <label class="form-item" for="batch">Brand:</label>
+                        <input type="text" class="form-control" value="<%= student.brand %>"  name="batch">
+                        <input type="hidden" value="<%= student._id %>" name="id">
+                        <br>
+                        <label class="form-item" for="name">price:</label>
+                        <input class="form-control" type="text" value="<%= student.price %>"  name="name">
+                        <label class="form-item" for="batch">descrption:</label>
+                        <input type="text" class="form-control" value="<%= student.descrption %>"  name="batch">
+                        <input type="hidden" value="<%= student._id %>" name="id">
+                        <br>
+                        <label class="form-item" for="name">Warenty:</label>
+                        <input class="form-control" type="text" value="<%= student.warrenty %>"  name="name">
+                        <label class="form-item" for="batch">Model:</label>
+                        <input type="text" class="form-control" value="<%= student.year %>"  name="batch">
+                        <input type="hidden" value="<%= student._id %>" name="id">
+                        <br>
+                        <button type="submit" class="btn btn-primary">update</button>
+                    </form>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Home | E-Shopper</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/prettyPhoto.css" rel="stylesheet">
+    <link href="css/price-range.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+	<link href="css/main.css" rel="stylesheet">
+	<link href="css/responsive.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->       
+    <link rel="shortcut icon" href="images/ico/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
+</head><!--/head-->
+
+<style>
+body{
+	background-color:rgb(249,249,249);
+	
+}
+#signup{margin-top: 10px;
+padding-bottom:10px;
+	margin-right: auto;
+	margin-left: 100px;
+	height:auto;
+	width: 520px;
+	border: 0px solid rgb(204,204,204);
+	border-radius:15px;}
+	
+#signup [type="text"]{
+width:285px;
+height:35px;
+margin-top:10px;
+margin-left:40px;
+border:2px solid rgb(204,204,204);
+font-family:Verdana, Geneva, sans-serif;
+font-size:16px;
+padding:4px;
+padding-left:15px;
+border-radius:5px;
+}
+#signup [type="text"]:hover{
+width:285px;
+height:35px;
+margin-top:10px;
+margin-left:40px;
+border:2px solid rgb(0,204,0);
+font-family:Verdana, Geneva, sans-serif;
+font-size:16px;
+padding:4px;
+padding-left:15px;
+border-radius:5px;
+}
+#signup [type="submit"]{width:100px;
+height:45px;
+border:2px solid rgb(204,204,204);
+font-family:Verdana, Geneva, sans-serif;
+font-size:17px;
+text-align:center;
+border-radius:3px;
+margin-left:15px;
+
+}
+#signup [type="submit"]:hover{width:100px;
+height:45px;
+border:2px solid rgb(0,204,0);
+font-family:Verdana, Geneva, sans-serif;
+font-size:17px;
+text-align:center;
+border-radius:3px;
+margin-left:15px;
+}
+
+</style>
+
+
+<body>
+    
+	<div class="container text-center">
+		<div class="logo-404">
+			<a href="index.html"><img src="images/home/logo.png" alt="" /></a>
+		</div>
+		<div class="content-404">
+			
+			<div id="signup">
+     <% students.forEach(student =>{ %>   
+        <img src="/uploads/<%= student.image %>" alt="" srcset="" width="50px" height="50px">
+        <p>Rs. <%= student.price %></p>
+		<p><%= student.brand %></p>
+        <p><%= student.category %></p>
+        <% }) %> 
+        <form action="/cartpro"  method="post">
+            
+            <input type="text"   placeholder="Enter Your Name ...." required="required" name='name'/>
+            <input type="text"   placeholder="Enter Your Number ...." required="required" name='number'/>
+            <input type="text"   placeholder="Enter Your Email ...." required="required" name='email'/>
+            <input type="text"   placeholder="Enter Your City ...." required="required" name='city'/>
+            <input type="text"   placeholder="Enter Your Brand name ...."  name='brand'/>
+            <input type="text"   placeholder="Enter Your category Name ...."  name='category'/>
+            <br>
+            <br>
+            <input type="submit" value="Add Here" />
+            </form>
+
+</div> 
+			
+			</div>
+	</div>
+
+  
+    <script src="js/jquery.js"></script>
+	<script src="js/price-range.js"></script>
+    <script src="js/jquery.scrollUp.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.prettyPhoto.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -11,7 +11,9 @@ const Buyproduct = require('./models/buyproduct');
 const User = require('./models/User');
 const passport = require('passport');
 const session = require('express-session');
-
+const {check, validationResult}=require('express-validator');
+const saltRounds=10;
+const bcrypt = require('bcrypt');
 
 //routes
 const users = require('./routes/users');
@@ -98,12 +100,15 @@ app.get('/', (req, res) => {
     res.render('login');
 });
 
-app.post('/login', (req, res, next) => {
+app.post('/login', (req, res,next) => {
     
   passport.authenticate('local', { 
-      successRedirect: '/',
+    
+    successRedirect: '/userdet',
+
       failureRedirect: '/login',
-      failureFlash: true })(req, res,next)
+      failureFlash: true })(req,res,next)
+      
 });
 
 app.get('/logout', (req, res) => {
@@ -260,13 +265,62 @@ app.get('/userdet', (req, res) => {
 app.get('/usercer', (req, res) => {
   res.render('user_create');
   });
-app.post('/usercer',(req, res) => {
- const user = new User({name:req.body.name,email:req.body.email,password:req.body.password,role:req.body.role })
- user.save()
- .then(results =>{res.redirect('/usercer');})
- .catch(err => {console.log(err)});
-});
+//app.post('/usercer',(req, res) => {
+ //const user = new User({name:req.body.name,email:req.body.email,password:req.body.password,role:req.body.role })
+ //user.save()
+ //.then(results =>{res.redirect('/usercer');})
+ //.catch(err => {console.log(err)});
+//}); 
+app.post('/usercer', [
+  check('name', 'Name is Required').exists().isLength({
+      min: 3
+  }),
+  check('email', 'Email is Required').exists().isEmail({
+      min: 3
+  }),
+  check('email').custom(value =>{
+      return User.findOne({email:value}).then(user=>{
+          if(user)
+          {
+           return Promise.reject('E-mail already in use');
+          }
+      })
+  }),
+  //checking password exists
+  check('password','Password is Required Password Must be atleast 6 character').exists().isLength({
+      min: 4
+  }),
+  
+], (req, res) => {
 
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+      const alert = errors.array();
+      res.render('userdetail', {
+          alert
+      });
+  } else {
+          const newuser = new User ({
+              name:req.body.name,
+              email:req.body.email,
+              password:req.body.password,
+              role:req.body.role
+          })
+          bcrypt.genSalt(saltRounds, function(err, salt) {
+              bcrypt.hash(req.body.password, salt, function(err, hash) {
+                  if(err){throw err}
+
+                  newuser.password = hash;
+                  newuser.save()
+                  .then(user =>{
+                      req.flash('success','New User added.');
+                      res.redirect('/userdet');
+                  })
+                  .catch(err =>console.log(err))
+              });
+          });     
+  }
+});
 
 
 

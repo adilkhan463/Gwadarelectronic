@@ -96,23 +96,8 @@ app.post('/create', [
 });
 
 
-app.get('/login', (req, res) => {
-    res.render('login');
-});
 
-app.post('/login', (req, res, next) => {
-    
-    passport.authenticate('local', { 
-        successRedirect: '/',
-        failureRedirect: '/login',
-        failureFlash: true })(req, res,next)
-});
 
-app.get('/logout', (req, res) => {
-    req.logout();
-    req.flash('success','you are logged out');
-    res.redirect('/users/login');
-});
 
 
 
